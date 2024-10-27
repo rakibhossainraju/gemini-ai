@@ -18,6 +18,7 @@ for await (const prompt of Deno.stdin.readable) {
       // Set background color to green for response input
       await Deno.stdout.write(encoder.encode(`\x1b[32m${chunk.text()}\x1b[0m\n`));
     }
+    promptText = "";
   }
 }
 

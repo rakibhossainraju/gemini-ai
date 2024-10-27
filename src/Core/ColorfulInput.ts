@@ -11,26 +11,26 @@ interface KeyType {
 }
 
 class ColorfulInput {
-    colorCode: string;
-    inputText: string;
+    private readonly colorCode: string;
+    private inputText: string;
     constructor(colorCode = '\x1b[32m') { // Default to green
         this.colorCode = colorCode;
         this.inputText = '';
         this.setupInputListener();
     }
 
-    setupInputListener() {
+    private setupInputListener() {
         readline.emitKeypressEvents(stdin);
         stdin.setRawMode(true);
 
         stdin.on('keypress', (str: string, key: KeyType) => this.handleKeyPress(str, key));
     }
 
-    handleKeyPress(str: string, key: KeyType) {
+    private handleKeyPress(str: string, key: KeyType) {
 
         if (key && key.ctrl && key.name === 'c') {
-            Deno.exit(); // Deno equivalent
-            exit(); // Exit on Ctrl+C
+            Deno.exit(0); // Deno equivalent
+            // exit(); // Exit on Ctrl+C
         } else if(key && key.ctrl) {
           console.log(key);
         }
@@ -46,20 +46,20 @@ class ColorfulInput {
         this.updateDisplay();
     }
 
-    newLine() {
+    private newLine() {
         stdout.write('\n');
         this.inputText = ''; // Reset input after a new line
     }
 
-    backspace() {
+    private backspace() {
         this.inputText = this.inputText.slice(0, -1);
     }
 
-    addCharacter(str: string) {
+    private addCharacter(str: string) {
         this.inputText += str;
     }
 
-    updateDisplay() {
+    private updateDisplay() {
         stdout.write('\u001b[2K\u001b[0G'); // Clear current line
         stdout.write(`${this.colorCode}${this.inputText}\x1b[0m`); // Display text in chosen color
     }
