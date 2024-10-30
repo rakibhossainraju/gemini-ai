@@ -1,26 +1,25 @@
 import AIModel from "@Core/AIModel.ts";
+import ColorfulInput from "@Core/ColorfulInput.ts";
 
-const aiModel = new AIModel();
-const decoder = new TextDecoder();
-const encoder = new TextEncoder();
 
-let promptText = "";
-for await (const prompt of Deno.stdin.readable) {
-  const text = decoder.decode(prompt).trim();
-  if (text === "exit") {
-    console.log("%cGood Bye :)", "color: yellow;");
-    Deno.exit(0);
-  } else if (text !== "send") {
-    promptText += text;
-  } else {
-    const result = await aiModel.generateContentStream(promptText);
-    for await (const chunk of result.stream) {
-      // Set background color to green for response input
-      await Deno.stdout.write(encoder.encode(`\x1b[32m${chunk.text()}\x1b[0m\n`));
-    }
-    promptText = "";
-  }
-}
+
+// let promptText = "";
+// for await (const prompt of Deno.stdin.readable) {
+//   const text = decoder.decode(prompt).trim();
+//   if (text === "exit") {
+//     console.log("%cGood Bye :)", "color: yellow;");
+//     Deno.exit(0);
+//   } else if (text !== "send") {
+//     promptText += text;
+//   } else {
+//     const result = await aiModel.generateContentStream(promptText);
+//     for await (const chunk of result.stream) {
+//       // Set background color to green for response input
+//       await Deno.stdout.write(encoder.encode(`\x1b[32m${chunk.text()}\x1b[0m\n`));
+//     }
+//     promptText = "";
+//   }
+// }
 
 
 // import * as readline from 'node:readline/promises';
